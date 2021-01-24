@@ -1,0 +1,6 @@
+.eslintcache
+node_modules
+package-lock.json
+.stack.yaml
+.env
+.idea
