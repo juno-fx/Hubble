@@ -3,3 +3,4 @@ node_modules
 .stack.yaml
 .env
 .idea
+.DS_Store
