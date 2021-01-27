@@ -2,12 +2,33 @@ version: '3.7'
 
 services:
   hubble:
+    tty: true
     image: junofx/hubble:latest
     build:
       context: .
-      target: build
+      target: dev
     ports:
       - 3000:3000
     volumes:
       - ./:/app/
-    command: npm start
+    command: yarn start
+
+  # auth stack
+  keycloak:
+    tty: true
+    image: quay.io/keycloak/keycloak:latest
+    environment:
+      DB_ADDR: auth-db
+      DB_DATABASE: auth
+    env_file:
+      - .env
+    ports:
+      - 8080:8080
+
+  auth-db:
+    tty: true
+    image: postgres:9.6.20-alpine
+    environment:
+      POSTGRES_DB: auth
+    env_file:
+      - .env

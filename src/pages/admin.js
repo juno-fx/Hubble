@@ -1,9 +1,10 @@
 import {Component} from "react";
 import {Button, Modal, Form, Row, Col, ProgressBar} from "react-bootstrap";
 import axios from "axios";
+import Keycloak from 'keycloak-js';
 
 
-class Luna extends Component {
+class Admin extends Component {
 
     state = {
         username: "",
@@ -19,6 +20,13 @@ class Luna extends Component {
         imaging: false,
         show: false,
         connected: true
+    }
+
+    componentDidMount() {
+        const keycloak = Keycloak('/keycloak.json');
+        keycloak.init({onLoad: 'login-required'}).then(authenticated => {
+            this.setState({ keycloak: keycloak, authenticated: authenticated })
+        })
     }
 
     handleVisible = () => {
@@ -232,4 +240,4 @@ class Luna extends Component {
     }
 }
 
-export default Luna;
+export default Admin;

@@ -1,17 +1,26 @@
+FROM node:alpine AS dev
+
+WORKDIR /app
+
+COPY . .
+
+RUN yarn install
+
 FROM node:alpine AS build
 
 WORKDIR /app
 
 COPY . .
 
-RUN npm i && npm run-script build
+RUN yarn install \
+    && yarn build
 
 FROM node:alpine
 
 WORKDIR /app
 
-RUN npm i serve -g
+RUN yarn global add serve
 
 COPY --from=build /app/build/ .
 
-CMD ["sh", "-c", "serve -s ."]
+CMD ["sh", "-c", "serve -s . -l tcp://0.0.0.0:3000"]
