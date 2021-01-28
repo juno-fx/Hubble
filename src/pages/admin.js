@@ -1,4 +1,4 @@
-import {Component} from "react";
+import React, {Component} from "react";
 import {Button, Modal, Form, Row, Col, ProgressBar} from "react-bootstrap";
 import axios from "axios";
 import Keycloak from 'keycloak-js';

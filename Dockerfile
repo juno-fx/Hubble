@@ -4,23 +4,26 @@ WORKDIR /app
 
 COPY . .
 
-RUN yarn install
+RUN yarn install \
+    --no-progress \
+    --ignore-optional \
+    --ignore-platform \
+    --ignore-engines
 
 FROM node:alpine AS build
 
 WORKDIR /app
 
-COPY . .
+COPY --from=dev /app/ .
 
-RUN yarn install \
-    && yarn build
+RUN yarn build
 
-FROM node:alpine
+FROM node:alpine AS prod
 
 WORKDIR /app
 
 RUN yarn global add serve
 
-COPY --from=build /app/build/ .
+COPY --from=build /app/dist/ .
 
-CMD ["sh", "-c", "serve -s . -l tcp://0.0.0.0:3000"]
+CMD ["sh", "-c", "serve -s /app/ -l tcp://0.0.0.0:3000"]
